@@ -1,0 +1,51 @@
+<div class="table-chart">
+  <h2>类Cell表格插入Chart图表DEMO</h2>
+  <div *ngIf="tableStatus !== 'normal'" class="table-create-operation">
+      请输入：生成 
+      <input #row class="ipt-create-cell" type="text">行
+      x <input #column class="ipt-create-cell" type="text">列 的cell表格
+      <button class="btn-chart" (click)="generateTable(table, row.value, column.value)">生成表格</button>
+  </div>
+  <div *ngIf="errorMsg" class="table-operation-error">{{errorMsg}}</div>
+  <div *ngIf="tableStatus === 'origin'" class="table-operation-desc">
+      <p>表格使用说明：</p>
+      <p>1.表格支持自定义行、列数量，即生成 m行 * n列 的cell表格</p>
+      <p>2.表格录入数据用于生成图表，对非法数据（字母、汉字、特殊字符）均当做0来处理</p>
+      <p>3.表格支持线性图、柱状图、饼状图、雷达图四种图表类型的生成</p>
+      <p>4.<s>表格暂不支持键盘移动focus单元格的操作</s></p>
+      <p>5.<s>表格暂不支持拖拽选中某区域数据的操作</s></p>
+  </div>
+  
+  <!-- table占位符 -->
+  <table #table class="table"></table>
+  
+  <div *ngIf="tableStatus === 'normal'">
+      <!-- 插入图表button -->
+      <button class="btn-chart" (click)="insertChart()">插入图表</button>
+      <!-- 重新生成表格button -->
+      <button class="btn-chart" (click)="reGenerateTable()">重新生成表格</button>
+  </div>
+  
+  <!-- chart占位符 -->
+  <div #chart class="echarts"></div>
+  
+  <!-- dialog -->
+  <div *ngIf="showDialog" class="type-select-mask-layer"></div>
+  <div *ngIf="showDialog" class="type-select-layer">
+      <div class="layer-title">选择图表类型</div>
+      <div class="layer-body">
+          <div 
+              *ngFor="let chatType of chartTypes" 
+              class="chart-type-container"
+              [class.chart-type-container-active]="chatType.active" 
+              (click)="selectChartType(chatType)">
+              <div class="chart-type-title">{{chatType.title}}</div>
+              <div class="chart-type-{{chatType.type}}"></div>
+          </div>
+      </div>
+      <div class="layer-footer">
+          <button class="btn-chart" (click)="confirmInsert()">确 定</button>
+          <button class="btn-chart" (click)="cancelInsert()">取 消</button>
+      </div>
+  </div>
+</div>
